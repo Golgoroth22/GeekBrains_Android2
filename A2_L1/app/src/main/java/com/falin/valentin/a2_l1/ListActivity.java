@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private ListView listView;
+    private MyListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,16 @@ public class ListActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        setListView();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void setListView() {
+        ListView listView = findViewById(R.id.content_list_view);
+        adapter = new MyListViewAdapter(this);
+        listView.setAdapter(adapter);
     }
 
     @Override

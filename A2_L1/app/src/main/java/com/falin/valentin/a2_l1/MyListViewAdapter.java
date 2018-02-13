@@ -47,11 +47,8 @@ public class MyListViewAdapter extends BaseAdapter {
         if (view == null) {
             view = layoutInflater.inflate(R.layout.list_view_item, viewGroup, false);
         }
-        TextView titleTextView = view.findViewById(R.id.item_title);
+        TextView titleTextView = view.findViewById(R.id.short_item_title);
         titleTextView.setText(list.get(i).getTitle());
-
-        TextView textView = view.findViewById(R.id.item_text);
-        textView.setText(list.get(i).getText());
 
         return view;
     }
