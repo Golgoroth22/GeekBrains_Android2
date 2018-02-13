@@ -1,7 +1,7 @@
-package com.falin.valentin.a2_l1.data;
+package com.falin.valentin.a2_l1;
 
 
-class Note {
+public class Note {
     private String title;
     private String text;
 
