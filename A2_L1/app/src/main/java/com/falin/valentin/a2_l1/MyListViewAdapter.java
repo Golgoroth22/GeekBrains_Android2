@@ -15,29 +15,32 @@ import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
     public static String EXTRA_ID = "id";
-    private List<Note> list;
     private Context context;
     private LayoutInflater layoutInflater;
 
     public MyListViewAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        list = new FakeDB().getDb();
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return FakeDB.getDb().size();
     }
 
     @Override
     public Object getItem(int i) {
-        return list.get(i);
+        return FakeDB.getDb().get(i);
     }
 
     @Override
     public long getItemId(int i) {
         return i;
+    }
+
+    public void deleteAll() {
+        FakeDB.getDb().clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,7 +49,7 @@ public class MyListViewAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.list_view_item, viewGroup, false);
         }
         TextView titleTextView = view.findViewById(R.id.short_item_title);
-        titleTextView.setText(list.get(i).getTitle());
+        titleTextView.setText(FakeDB.getDb().get(i).getTitle());
         titleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

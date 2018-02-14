@@ -77,11 +77,15 @@ public class ListActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add) {
-            return true;
+        switch (id) {
+            case R.id.action_delete_all: {
+                adapter.deleteAll();
+                return true;
+            }
+            default: {
+                return false;
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

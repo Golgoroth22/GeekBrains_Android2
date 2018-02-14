@@ -21,6 +21,7 @@ import java.util.List;
 
 public class ListFullViewItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +30,14 @@ public class ListFullViewItemActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<Note> db = new FakeDB().getDb();
-
         Intent intent = getIntent();
-        int id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
+        id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
 
         TextView titleText = findViewById(R.id.item_title);
-        titleText.setText(db.get(id).getTitle());
+        titleText.setText(FakeDB.getDb().get(id).getTitle());
 
         TextView text = findViewById(R.id.item_text);
-        text.setText(db.get(id).getText());
+        text.setText(FakeDB.getDb().get(id).getText());
     }
 
     @Override
@@ -65,36 +64,22 @@ public class ListFullViewItemActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_delete_note: {
+                FakeDB.getDb().remove(id);
+                Intent intent = new Intent(this, ListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default: {
+                return false;
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
