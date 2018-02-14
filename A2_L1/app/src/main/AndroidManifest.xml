@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ListFullViewItemActivity"
+            android:label="@string/title_activity_list_full_view_item"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

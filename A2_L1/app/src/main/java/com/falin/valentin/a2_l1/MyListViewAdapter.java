@@ -1,6 +1,7 @@
 package com.falin.valentin.a2_l1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.falin.valentin.a2_l1.data.FakeDB;
 import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
+    public static String EXTRA_ID = "id";
     private List<Note> list;
     private Context context;
     private LayoutInflater layoutInflater;
@@ -39,12 +41,20 @@ public class MyListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = layoutInflater.inflate(R.layout.list_view_item, viewGroup, false);
         }
         TextView titleTextView = view.findViewById(R.id.short_item_title);
         titleTextView.setText(list.get(i).getTitle());
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ListFullViewItemActivity.class);
+                intent.putExtra(EXTRA_ID, i);
+                context.startActivity(intent);
+            }
+        });
 
         return view;
     }

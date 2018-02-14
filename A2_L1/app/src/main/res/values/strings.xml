@@ -7,4 +7,7 @@
     <string name="action_delete_all">Delete all</string>
     <string name="action_add">Add</string>
     <string name="do_nothing">Do nothing</string>
+    <string name="title_activity_list_full_view_item">ListFullViewItemActivity</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
