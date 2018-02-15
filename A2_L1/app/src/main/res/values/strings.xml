@@ -11,4 +11,6 @@
 
     <string name="action_delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="add_note">Add note</string>
+    <string name="clear_notebook">Clear notebook</string>
 </resources>
