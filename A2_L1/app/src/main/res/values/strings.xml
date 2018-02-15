@@ -9,5 +9,6 @@
     <string name="do_nothing">Do nothing</string>
     <string name="title_activity_list_full_view_item">ListFullViewItemActivity</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
