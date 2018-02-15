@@ -29,8 +29,7 @@ public class ListActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                adapter.addElement();
             }
         });
 
@@ -80,6 +79,10 @@ public class ListActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_all: {
                 adapter.deleteAll();
+                return true;
+            }
+            case R.id.action_add: {
+                adapter.addElement();
                 return true;
             }
             default: {
