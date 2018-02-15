@@ -39,7 +39,7 @@ public class MyListViewAdapter extends BaseAdapter {
     }
 
     public void addElement() {
-        FakeDB.getDb().add(new Note("New Note" + FakeDB.getDb().size(), "New Note Text" + FakeDB.getDb().size()));
+        FakeDB.getDb().add(new Note("New Note " + (FakeDB.getDb().size() + 1), "New Note Text " + (FakeDB.getDb().size() + 1)));
         notifyDataSetChanged();
     }
 

@@ -2,13 +2,9 @@ package com.falin.valentin.a2_l1;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,11 +13,9 @@ import android.widget.TextView;
 
 import com.falin.valentin.a2_l1.data.FakeDB;
 
-import java.util.List;
-
 public class ListFullViewItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private int id;
+    private int note_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +25,20 @@ public class ListFullViewItemActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
+        note_id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
 
         TextView titleText = findViewById(R.id.item_title);
-        titleText.setText(FakeDB.getDb().get(id).getTitle());
+        titleText.setText(FakeDB.getDb().get(note_id).getTitle());
 
         TextView text = findViewById(R.id.item_text);
-        text.setText(FakeDB.getDb().get(id).getText());
+        text.setText(FakeDB.getDb().get(note_id).getText());
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        Intent intent = new Intent(this, ListActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     @Override
@@ -66,8 +57,21 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_delete_note: {
-                FakeDB.getDb().remove(id);
+                FakeDB.getDb().remove(note_id);
                 Intent intent = new Intent(this, ListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.action_edit_note: {
+                String title = FakeDB.getDb().get(note_id).getTitle();
+                String text = FakeDB.getDb().get(note_id).getText();
+                String reversTitle = new StringBuilder(title).reverse().toString();
+                String reversText = new StringBuilder(text).reverse().toString();
+                FakeDB.getDb().set(note_id, new Note(reversTitle, reversText));
+
+                Intent intent = new Intent(this, this.getClass());
+                finish();
+                intent.putExtra(MyListViewAdapter.EXTRA_ID, note_id);
                 startActivity(intent);
                 return true;
             }
