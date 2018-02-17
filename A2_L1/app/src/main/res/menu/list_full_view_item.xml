@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_edit_note"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_check_black_24dp"
         android:title="@string/edit"
         app:showAsAction="ifRoom" />
 </menu>

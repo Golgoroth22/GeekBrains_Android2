@@ -17,14 +17,14 @@
         android:layout_marginTop="@dimen/dimen_16dp"
         android:orientation="vertical">
 
-        <TextView
+        <EditText
             android:id="@+id/item_title"
             style="@style/RedBoldText"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <TextView
+        <EditText
             android:id="@+id/item_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
