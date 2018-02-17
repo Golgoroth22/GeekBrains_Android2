@@ -7,8 +7,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.falin.valentin.a2_l1.data.FakeDB;
@@ -27,10 +29,10 @@ public class ListFullViewItemActivity extends AppCompatActivity
         Intent intent = getIntent();
         note_id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
 
-        TextView titleText = findViewById(R.id.item_title);
+        EditText titleText = findViewById(R.id.item_title);
         titleText.setText(FakeDB.getDb().get(note_id).getTitle());
 
-        TextView text = findViewById(R.id.item_text);
+        EditText text = findViewById(R.id.item_text);
         text.setText(FakeDB.getDb().get(note_id).getText());
     }
 
@@ -60,19 +62,21 @@ public class ListFullViewItemActivity extends AppCompatActivity
                 FakeDB.getDb().remove(note_id);
                 Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
+
                 return true;
             }
             case R.id.action_edit_note: {
-                String title = FakeDB.getDb().get(note_id).getTitle();
-                String text = FakeDB.getDb().get(note_id).getText();
-                String reversTitle = new StringBuilder(title).reverse().toString();
-                String reversText = new StringBuilder(text).reverse().toString();
-                FakeDB.getDb().set(note_id, new Note(reversTitle, reversText));
+                EditText titleText = findViewById(R.id.item_title);
+                String titleTextText = titleText.getText().toString();
 
-                Intent intent = new Intent(this, this.getClass());
-                finish();
-                intent.putExtra(MyListViewAdapter.EXTRA_ID, note_id);
+                EditText text = findViewById(R.id.item_text);
+                String textText = text.getText().toString();
+
+                FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
+
+                Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
+
                 return true;
             }
             default: {

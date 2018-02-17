@@ -22,7 +22,10 @@
         <activity
             android:name=".ListFullViewItemActivity"
             android:label="@string/title_activity_list_full_view_item"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DevActivity"
+            android:parentActivityName=".ListActivity" />
     </application>
 
 </manifest>
