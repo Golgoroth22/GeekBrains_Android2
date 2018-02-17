@@ -14,11 +14,11 @@ import com.falin.valentin.a2_l1.data.FakeDB;
 import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
-    public static String EXTRA_ID = "id";
+    static String EXTRA_ID = "id";
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public MyListViewAdapter(Context context) {
+    MyListViewAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -38,12 +38,12 @@ public class MyListViewAdapter extends BaseAdapter {
         return i;
     }
 
-    public void addElement() {
+    void addElement() {
         FakeDB.getDb().add(new Note("New Note " + (FakeDB.getDb().size() + 1), "New Note Text " + (FakeDB.getDb().size() + 1)));
         notifyDataSetChanged();
     }
 
-    public void deleteAll() {
+    void deleteAll() {
         FakeDB.getDb().clear();
         notifyDataSetChanged();
     }

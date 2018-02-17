@@ -5,8 +5,7 @@
 
     <TextView
         android:id="@+id/short_item_title"
+        style="@style/RedBoldText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_40dp"
-        android:gravity="center"
-        android:textStyle="bold" />
+        android:layout_height="@dimen/dimen_40dp" />
 </FrameLayout>

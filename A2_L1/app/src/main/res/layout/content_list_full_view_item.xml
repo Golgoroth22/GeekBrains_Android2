@@ -18,21 +18,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:textSize="@dimen/dimen_32sp"
             android:id="@+id/item_title"
+            style="@style/RedBoldText"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textStyle="bold" />
+            android:layout_weight="1" />
 
         <TextView
-            android:textSize="@dimen/text_dimen_16sp"
             android:id="@+id/item_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
-            android:layout_weight="4" />
+            android:layout_weight="4"
+            android:textSize="@dimen/text_dimen_16sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
