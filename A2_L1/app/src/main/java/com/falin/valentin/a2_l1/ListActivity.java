@@ -1,5 +1,6 @@
 package com.falin.valentin.a2_l1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -100,6 +101,9 @@ public class ListActivity extends AppCompatActivity
             adapter.deleteAll();
         } else if (id == R.id.nav_add_note) {
             adapter.addElement();
+        } else if (id == R.id.contacts) {
+            Intent intent = new Intent(this, DevActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.full_view_item_layout);

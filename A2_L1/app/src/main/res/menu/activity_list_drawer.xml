@@ -13,4 +13,13 @@
             android:icon="@android:drawable/ic_delete"
             android:title="@string/clear_notebook" />
     </group>
+
+    <item android:title="@string/about_developer">
+        <menu>
+            <item
+                android:id="@+id/contacts"
+                android:icon="@android:drawable/ic_menu_compass"
+                android:title="@string/contacts" />
+        </menu>
+    </item>
 </menu>

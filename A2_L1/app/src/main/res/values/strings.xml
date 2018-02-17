@@ -13,4 +13,8 @@
     <string name="edit">Edit</string>
     <string name="add_note">Add note</string>
     <string name="clear_notebook">Clear notebook</string>
+    <string name="about_developer">About developer</string>
+    <string name="contacts">Contacts</string>
+    <string name="hi_i_m_bob">Hi! I`m Bob!</string>
+    <string name="my_email_google_gmail_com">My email: google@gmail.com</string>
 </resources>
