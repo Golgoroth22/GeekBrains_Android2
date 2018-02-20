@@ -8,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.falin.valentin.a2_l1.data.FakeDB;
-
-import java.util.List;
 
 public class MyListViewAdapter extends BaseAdapter {
     static String EXTRA_ID = "id";
@@ -40,8 +37,9 @@ public class MyListViewAdapter extends BaseAdapter {
 
     void addElement() {
         FakeDB.getDb().add(new Note("", ""));
-
-        notifyDataSetChanged();
+        Intent intent = new Intent(context, ListFullViewItemActivity.class);
+        intent.putExtra(EXTRA_ID, FakeDB.getDb().size() - 1);
+        context.startActivity(intent);
     }
 
     void deleteAll() {
