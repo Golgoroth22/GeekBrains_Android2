@@ -17,4 +17,6 @@
     <string name="contacts">Contacts</string>
     <string name="hi_i_m_bob">Hi! I`m Bob!</string>
     <string name="my_email_google_gmail_com">My email: google@gmail.com</string>
+    <string name="notebook_is_empty">NoteBook is Empty</string>
+    <string name="notebook_is_not_empty"> </string>
 </resources>

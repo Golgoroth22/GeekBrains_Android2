@@ -13,10 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.falin.valentin.a2_l1.data.FakeDB;
 
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MyListViewAdapter adapter;
+    private TextView contentListViewText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class ListActivity extends AppCompatActivity
         toggle.syncState();
 
         setListView();
+        contentListViewText = findViewById(R.id.content_list_view_text);
+        checkNoteBookSize();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -79,6 +85,7 @@ public class ListActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_all: {
                 adapter.deleteAll();
+                checkNoteBookSize();
                 return true;
             }
             case R.id.action_add: {
@@ -91,6 +98,14 @@ public class ListActivity extends AppCompatActivity
         }
     }
 
+    private void checkNoteBookSize() {
+        if (FakeDB.getDb().size() == 0) {
+            contentListViewText.setText(R.string.notebook_is_empty);
+        } else {
+            contentListViewText.setText(R.string.notebook_is_not_empty);
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -99,6 +114,7 @@ public class ListActivity extends AppCompatActivity
 
         if (id == R.id.nav_clear_notebook) {
             adapter.deleteAll();
+            checkNoteBookSize();
         } else if (id == R.id.nav_add_note) {
             adapter.addElement();
         } else if (id == R.id.contacts) {
