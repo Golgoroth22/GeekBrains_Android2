@@ -39,6 +39,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, ListActivity.class);
+        saveChangesInNote();
         finish();
         startActivity(intent);
     }
@@ -66,14 +67,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
                 return true;
             }
             case R.id.action_edit_note: {
-                EditText titleText = findViewById(R.id.item_title);
-                String titleTextText = titleText.getText().toString();
-
-                EditText text = findViewById(R.id.item_text);
-                String textText = text.getText().toString();
-
-                FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
-
+                saveChangesInNote();
                 Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
 
@@ -83,6 +77,16 @@ public class ListFullViewItemActivity extends AppCompatActivity
                 return false;
             }
         }
+    }
+
+    private void saveChangesInNote() {
+        EditText titleText = findViewById(R.id.item_title);
+        String titleTextText = titleText.getText().toString();
+
+        EditText text = findViewById(R.id.item_text);
+        String textText = text.getText().toString();
+
+        FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
