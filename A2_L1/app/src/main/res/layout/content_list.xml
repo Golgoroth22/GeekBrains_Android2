@@ -10,14 +10,42 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_40dp">
+        android:layout_height="@dimen/dimen_40dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/content_city_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginStart="@dimen/dimen_16dp"
+            android:layout_weight="1"
+            android:hint="@string/enter_your_city"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/content_check_city_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginStart="@dimen/dimen_16dp"
+            android:background="@color/colorAccent"
+            android:contentDescription="@string/checkbutton"
+            android:src="@drawable/ic_check_black_24dp" />
 
         <TextView
             android:id="@+id/content_degrees_text_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:layout_marginStart="@dimen/dimen_16dp"
             android:background="@color/colorAccent"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <ListView
@@ -32,7 +60,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:gravity="center"
-        android:text="@string/notebook_is_not_empty"
+        android:text="@string/notebook_is_empty"
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:textStyle="bold" />
 

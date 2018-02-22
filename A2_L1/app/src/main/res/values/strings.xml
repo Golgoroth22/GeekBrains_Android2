@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_delete_all">Delete all</string>
+    <string name="action_delete_all">Clear noteBook</string>
     <string name="action_add">Add</string>
     <string name="do_nothing">Do nothing</string>
     <string name="title_activity_list_full_view_item">ListFullViewItemActivity</string>
@@ -18,5 +18,6 @@
     <string name="hi_i_m_bob">Hi! I`m Bob!</string>
     <string name="my_email_google_gmail_com">My email: google@gmail.com</string>
     <string name="notebook_is_empty">NoteBook is Empty</string>
-    <string name="notebook_is_not_empty"> </string>
+    <string name="checkbutton">CheckButton</string>
+    <string name="enter_your_city">Enter your city</string>
 </resources>
