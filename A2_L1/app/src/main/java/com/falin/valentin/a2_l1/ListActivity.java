@@ -100,9 +100,9 @@ public class ListActivity extends AppCompatActivity
 
     private void checkNoteBookSize() {
         if (FakeDB.getDb().size() == 0) {
-            contentListViewText.setText(R.string.notebook_is_empty);
+            contentListViewText.setVisibility(View.VISIBLE);
         } else {
-            contentListViewText.setText(R.string.notebook_is_not_empty);
+            contentListViewText.setVisibility(View.INVISIBLE);
         }
     }
 
