@@ -44,6 +44,17 @@ public class ListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        initUIComponents();
+
+        initListView();
+
+        initViews();
+
+        checkNoteBookSize();
+    }
+
+    private void initUIComponents() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,8 +72,11 @@ public class ListActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        setListView();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
+    private void initViews() {
         contentListViewText = findViewById(R.id.content_list_view_text);
         contentCityApplyButton = findViewById(R.id.content_check_city_button);
         contentCityApplyButton.setOnClickListener(new View.OnClickListener() {
@@ -76,14 +90,9 @@ public class ListActivity extends AppCompatActivity
         contentCityInputEditText.setText(city);
         contentDegreesTextView = findViewById(R.id.content_degrees_text_view);
         contentDegreesTextView.setText(cityDegrees);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        checkNoteBookSize();
     }
 
-    private void setListView() {
+    private void initListView() {
         ListView listView = findViewById(R.id.content_list_view);
         adapter = new MyListViewAdapter(this);
         listView.setAdapter(adapter);
