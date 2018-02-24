@@ -20,8 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +35,7 @@ public class ListActivity extends AppCompatActivity
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
     private MyListViewAdapter adapter;
     private TextView contentListViewText;
-    private EditText contentCityInputEditText;
-    private ImageButton contentCityApplyButton;
+    private TextView contentCityTextView;
     private TextView contentDegreesTextView;
 
     private static String city = "";
@@ -114,16 +111,8 @@ public class ListActivity extends AppCompatActivity
 
     private void initViews() {
         contentListViewText = findViewById(R.id.content_list_view_text);
-        contentCityApplyButton = findViewById(R.id.content_check_city_button);
-        contentCityApplyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                city = contentCityInputEditText.getText().toString();
-                //updateWeatherData();
-            }
-        });
-        contentCityInputEditText = findViewById(R.id.content_city_edit_text);
-        contentCityInputEditText.setText(city);
+        contentCityTextView = findViewById(R.id.content_city_text_view);
+        contentCityTextView.setText(city);
         contentDegreesTextView = findViewById(R.id.content_degrees_text_view);
         contentDegreesTextView.setText(cityDegrees);
     }
@@ -163,7 +152,7 @@ public class ListActivity extends AppCompatActivity
             JSONObject mainObject = jsonObject.getJSONObject("main");
             cityDegrees = String.format("%.2f", mainObject.getDouble("temp")) + " ℃";
             contentDegreesTextView.setText(cityDegrees);
-            contentCityInputEditText.setText(jsonObject.get("name").toString());
+            contentCityTextView.setText(jsonObject.get("name").toString());
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(LOG_TAG, "One or more fields not found in the JSON data");
