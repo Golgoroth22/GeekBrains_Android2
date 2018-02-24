@@ -23,7 +23,7 @@ public class WeatherDataLoader {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty(KEY, API_KEY);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuffer rawData = new StringBuffer(1024);
+            StringBuilder rawData = new StringBuilder(1024);
             String tempVar;
             while ((tempVar = reader.readLine()) != null) {
                 rawData.append(tempVar).append(NEW_LINE);
