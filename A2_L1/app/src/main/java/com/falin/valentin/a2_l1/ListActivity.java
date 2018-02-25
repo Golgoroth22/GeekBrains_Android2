@@ -1,9 +1,15 @@
 package com.falin.valentin.a2_l1;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,8 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +35,7 @@ public class ListActivity extends AppCompatActivity
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
     private MyListViewAdapter adapter;
     private TextView contentListViewText;
-    private EditText contentCityInputEditText;
-    private ImageButton contentCityApplyButton;
+    private TextView contentCityTextView;
     private TextView contentDegreesTextView;
 
     private static String city = "";
@@ -45,6 +48,8 @@ public class ListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        getLocation();
+
         initUIComponents();
 
         initListView();
@@ -53,6 +58,34 @@ public class ListActivity extends AppCompatActivity
 
         checkNoteBookSize();
     }
+
+    private void getLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 3, 0, locationListener);
+    }
+
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            updateWeatherData(location);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+    };
 
     private void initUIComponents() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,16 +111,8 @@ public class ListActivity extends AppCompatActivity
 
     private void initViews() {
         contentListViewText = findViewById(R.id.content_list_view_text);
-        contentCityApplyButton = findViewById(R.id.content_check_city_button);
-        contentCityApplyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                city = contentCityInputEditText.getText().toString();
-                updateWeatherData();
-            }
-        });
-        contentCityInputEditText = findViewById(R.id.content_city_edit_text);
-        contentCityInputEditText.setText(city);
+        contentCityTextView = findViewById(R.id.content_city_text_view);
+        contentCityTextView.setText(city);
         contentDegreesTextView = findViewById(R.id.content_degrees_text_view);
         contentDegreesTextView.setText(cityDegrees);
     }
@@ -98,11 +123,11 @@ public class ListActivity extends AppCompatActivity
         listView.setAdapter(adapter);
     }
 
-    private void updateWeatherData() {
+    private void updateWeatherData(final Location location) {
         new Thread() {
             @Override
             public void run() {
-                final JSONObject jsonObject = WeatherDataLoader.getJSONData(getApplicationContext(), city);
+                final JSONObject jsonObject = WeatherDataLoader.getJSONData(location);
                 if (jsonObject == null) {
                     handler.post(new Runnable() {
                         @Override
@@ -127,6 +152,7 @@ public class ListActivity extends AppCompatActivity
             JSONObject mainObject = jsonObject.getJSONObject("main");
             cityDegrees = String.format("%.2f", mainObject.getDouble("temp")) + " ℃";
             contentDegreesTextView.setText(cityDegrees);
+            contentCityTextView.setText(jsonObject.get("name").toString());
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(LOG_TAG, "One or more fields not found in the JSON data");
