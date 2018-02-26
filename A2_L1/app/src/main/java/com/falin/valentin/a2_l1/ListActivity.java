@@ -30,9 +30,18 @@ import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.List;
+
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
+    public static String internalFileName = "internal_file.notes";
+    private String filePath;
+
     private MyListViewAdapter adapter;
     private TextView contentListViewText;
     private TextView contentCityTextView;
@@ -47,6 +56,9 @@ public class ListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        filePath = getFilesDir() + "/" + internalFileName;
+
+        loadFromFile();
 
         getLocation();
 
@@ -159,6 +171,23 @@ public class ListActivity extends AppCompatActivity
         }
     }
 
+    private void loadFromFile() {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            List<Note> list = (List<Note>) objectInputStream.readObject();
+            FakeDB.getDb().clear();
+            FakeDB.getDb().addAll(list);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.full_view_item_layout);
@@ -185,9 +214,8 @@ public class ListActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_delete_all: {
+            case R.id.action_delete_all_data: {
                 adapter.deleteAll();
-                checkNoteBookSize();
                 return true;
             }
 //            case R.id.action_add: {
