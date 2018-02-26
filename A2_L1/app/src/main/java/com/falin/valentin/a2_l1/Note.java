@@ -1,7 +1,9 @@
 package com.falin.valentin.a2_l1;
 
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private String title;
     private String text;
 
