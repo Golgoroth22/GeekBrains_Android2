@@ -46,7 +46,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         text.setText(FakeDB.getDb().get(note_id).getText());
     }
 
-    private void saveToFile() {
+    public static void saveToFile(String filePath) {
         File file;
         try {
             file = new File(filePath);
@@ -93,6 +93,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_note: {
                 FakeDB.getDb().remove(note_id);
+                saveToFile(filePath);
                 Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
 
@@ -119,7 +120,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         String textText = text.getText().toString();
 
         FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
-        saveToFile();
+        saveToFile(filePath);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

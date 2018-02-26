@@ -216,6 +216,7 @@ public class ListActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_all_data: {
                 adapter.deleteAll();
+                ListFullViewItemActivity.saveToFile(filePath);
                 return true;
             }
 //            case R.id.action_add: {
