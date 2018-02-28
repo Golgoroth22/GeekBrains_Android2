@@ -42,27 +42,27 @@ public class ListFullViewItemActivity extends AppCompatActivity
         text.setText(FakeDB.getDb().get(note_id).getText());
     }
 
-    public static void saveToFile(String filePath) {
-        File file;
-        try {
-            file = new File(filePath);
-            FileOutputStream fileOutputStream;
-            ObjectOutputStream objectOutputStream;
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            fileOutputStream = new FileOutputStream(file, false);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            objectOutputStream.writeObject(FakeDB.getDb());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void saveToFile(String filePath) {
+//        File file;
+//        try {
+//            file = new File(filePath);
+//            FileOutputStream fileOutputStream;
+//            ObjectOutputStream objectOutputStream;
+//
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            }
+//
+//            fileOutputStream = new FileOutputStream(file, false);
+//            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//
+//            objectOutputStream.writeObject(FakeDB.getDb());
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -89,7 +89,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_note: {
                 FakeDB.getDb().remove(note_id);
-                saveToFile(filePath);
+                //saveToFile(filePath);
                 Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
 
@@ -116,7 +116,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         String textText = text.getText().toString();
 
         FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
-        saveToFile(filePath);
+        //saveToFile(filePath);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
