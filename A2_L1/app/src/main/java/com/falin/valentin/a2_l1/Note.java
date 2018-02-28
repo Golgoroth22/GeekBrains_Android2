@@ -4,12 +4,21 @@ package com.falin.valentin.a2_l1;
 import java.io.Serializable;
 
 public class Note implements Serializable {
+    private long id;
     private String title;
     private String text;
 
     public Note(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -26,5 +35,10 @@ public class Note implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return title + " " + text;
     }
 }

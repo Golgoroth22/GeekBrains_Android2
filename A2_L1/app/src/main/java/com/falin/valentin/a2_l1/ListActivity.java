@@ -58,7 +58,7 @@ public class ListActivity extends AppCompatActivity
         setContentView(R.layout.activity_list);
         filePath = getFilesDir() + "/" + internalFileName;
 
-        loadFromFile();
+        //loadFromFile();
 
         getLocation();
 
@@ -171,22 +171,22 @@ public class ListActivity extends AppCompatActivity
         }
     }
 
-    private void loadFromFile() {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            List<Note> list = (List<Note>) objectInputStream.readObject();
-            FakeDB.getDb().clear();
-            FakeDB.getDb().addAll(list);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void loadFromFile() {
+//        try {
+//            FileInputStream fileInputStream = new FileInputStream(filePath);
+//            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+//
+//            List<Note> list = (List<Note>) objectInputStream.readObject();
+//            FakeDB.getDb().clear();
+//            FakeDB.getDb().addAll(list);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -216,7 +216,7 @@ public class ListActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_all_data: {
                 adapter.deleteAll();
-                ListFullViewItemActivity.saveToFile(filePath);
+//                ListFullViewItemActivity.saveToFile(filePath);
                 return true;
             }
 //            case R.id.action_add: {
