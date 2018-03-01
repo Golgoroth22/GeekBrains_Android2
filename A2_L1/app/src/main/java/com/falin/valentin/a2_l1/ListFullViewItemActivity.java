@@ -1,6 +1,7 @@
 package com.falin.valentin.a2_l1;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
+import com.falin.valentin.a2_l1.data.NotesTable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,12 +23,15 @@ import java.io.ObjectOutputStream;
 public class ListFullViewItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private int note_id;
+    private SQLiteDatabase database;
     private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_full_view_item);
+
+        initDB();
 
         filePath = getFilesDir() + "/" + ListActivity.internalFileName;
 
@@ -40,6 +46,10 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         EditText text = findViewById(R.id.item_text);
         text.setText(FakeDB.getDb().get(note_id).getText());
+    }
+
+    private void initDB() {
+        database = new DatabaseSQLiteHelper(getApplicationContext()).getWritableDatabase();
     }
 
 //    public static void saveToFile(String filePath) {
@@ -88,7 +98,8 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_delete_note: {
-                FakeDB.getDb().remove(note_id);
+                NotesTable.deleteNote(note_id, database);
+                //FakeDB.getDb().remove(note_id);
                 //saveToFile(filePath);
                 Intent intent = new Intent(this, ListActivity.class);
                 startActivity(intent);
@@ -115,7 +126,9 @@ public class ListFullViewItemActivity extends AppCompatActivity
         EditText text = findViewById(R.id.item_text);
         String textText = text.getText().toString();
 
-        FakeDB.getDb().set(note_id, new Note(titleTextText, textText));
+        Note note = new Note(note_id, titleTextText, textText);
+        NotesTable.editNote(note, database);
+        //FakeDB.getDb().set(note_id, note);
         //saveToFile(filePath);
     }
 

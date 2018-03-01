@@ -8,9 +8,18 @@ public class Note implements Serializable {
     private String title;
     private String text;
 
-    public Note(String title, String text) {
+    Note(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public Note(long id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
+
+    public Note() {
     }
 
     public long getId() {

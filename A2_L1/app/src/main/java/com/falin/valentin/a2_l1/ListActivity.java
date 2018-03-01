@@ -3,6 +3,8 @@ package com.falin.valentin.a2_l1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
 import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 
@@ -43,6 +46,8 @@ public class ListActivity extends AppCompatActivity
     private String filePath;
 
     private MyListViewAdapter adapter;
+    private SQLiteDatabase database;
+
     private TextView contentListViewText;
     private TextView contentCityTextView;
     private TextView contentDegreesTextView;
@@ -64,11 +69,17 @@ public class ListActivity extends AppCompatActivity
 
         initUIComponents();
 
+        initDB();
+
         initListView();
 
         initViews();
 
         checkNoteBookSize();
+    }
+
+    private void initDB() {
+        database = new DatabaseSQLiteHelper(getApplicationContext()).getWritableDatabase();
     }
 
     private void getLocation() {
@@ -77,7 +88,7 @@ public class ListActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 3, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
     }
 
     private LocationListener locationListener = new LocationListener() {
@@ -131,7 +142,7 @@ public class ListActivity extends AppCompatActivity
 
     private void initListView() {
         ListView listView = findViewById(R.id.content_list_view);
-        adapter = new MyListViewAdapter(this);
+        adapter = new MyListViewAdapter(this, database);
         listView.setAdapter(adapter);
     }
 
@@ -187,6 +198,15 @@ public class ListActivity extends AppCompatActivity
 //            e.printStackTrace();
 //        }
 //    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.updateList();
+        }
+    }
 
     @Override
     public void onBackPressed() {
