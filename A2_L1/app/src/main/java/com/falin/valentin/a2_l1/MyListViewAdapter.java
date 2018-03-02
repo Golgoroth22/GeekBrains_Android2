@@ -2,6 +2,7 @@ package com.falin.valentin.a2_l1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.falin.valentin.a2_l1.data.FakeDB;
+import com.falin.valentin.a2_l1.data.NotesTable;
 
 public class MyListViewAdapter extends BaseAdapter {
     static String EXTRA_ID = "id";
     private Context context;
     private LayoutInflater layoutInflater;
+    private SQLiteDatabase database;
 
-    MyListViewAdapter(Context context) {
+    MyListViewAdapter(Context context, SQLiteDatabase database) {
         this.context = context;
+        this.database = database;
+        FakeDB.getDb().clear();
+        FakeDB.getDb().addAll(NotesTable.getAllNotes(database));
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -36,7 +42,9 @@ public class MyListViewAdapter extends BaseAdapter {
     }
 
     void addElement() {
-        FakeDB.getDb().add(new Note("", ""));
+        Note note = new Note(" ", " ");
+        FakeDB.getDb().add(note);
+        NotesTable.addNote(note, database);
         Intent intent = new Intent(context, ListFullViewItemActivity.class);
         intent.putExtra(EXTRA_ID, FakeDB.getDb().size() - 1);
         context.startActivity(intent);
@@ -44,6 +52,13 @@ public class MyListViewAdapter extends BaseAdapter {
 
     void deleteAll() {
         FakeDB.getDb().clear();
+        NotesTable.deleteAll(database);
+        notifyDataSetChanged();
+    }
+
+    void updateList() {
+        FakeDB.getDb().clear();
+        FakeDB.getDb().addAll(NotesTable.getAllNotes(database));
         notifyDataSetChanged();
     }
 

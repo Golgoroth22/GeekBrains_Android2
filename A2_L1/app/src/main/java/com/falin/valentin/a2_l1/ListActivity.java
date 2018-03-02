@@ -3,6 +3,8 @@ package com.falin.valentin.a2_l1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,25 +26,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
 import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.List;
-
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
     public static String internalFileName = "internal_file.notes";
-    private String filePath;
 
     private MyListViewAdapter adapter;
+    public static SQLiteDatabase database;
+
     private TextView contentListViewText;
     private TextView contentCityTextView;
     private TextView contentDegreesTextView;
@@ -56,13 +54,12 @@ public class ListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        filePath = getFilesDir() + "/" + internalFileName;
-
-        //loadFromFile();
 
         getLocation();
 
         initUIComponents();
+
+        initDB();
 
         initListView();
 
@@ -71,13 +68,17 @@ public class ListActivity extends AppCompatActivity
         checkNoteBookSize();
     }
 
+    private void initDB() {
+        database = new DatabaseSQLiteHelper(getApplicationContext()).getWritableDatabase();
+    }
+
     private void getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 3, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
     }
 
     private LocationListener locationListener = new LocationListener() {
@@ -131,7 +132,7 @@ public class ListActivity extends AppCompatActivity
 
     private void initListView() {
         ListView listView = findViewById(R.id.content_list_view);
-        adapter = new MyListViewAdapter(this);
+        adapter = new MyListViewAdapter(this, database);
         listView.setAdapter(adapter);
     }
 
@@ -171,22 +172,13 @@ public class ListActivity extends AppCompatActivity
         }
     }
 
-//    private void loadFromFile() {
-//        try {
-//            FileInputStream fileInputStream = new FileInputStream(filePath);
-//            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-//
-//            List<Note> list = (List<Note>) objectInputStream.readObject();
-//            FakeDB.getDb().clear();
-//            FakeDB.getDb().addAll(list);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.updateList();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -216,13 +208,8 @@ public class ListActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_delete_all_data: {
                 adapter.deleteAll();
-//                ListFullViewItemActivity.saveToFile(filePath);
                 return true;
             }
-//            case R.id.action_add: {
-//                adapter.addElement();
-//                return true;
-//            }
             default: {
                 return false;
             }
