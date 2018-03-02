@@ -42,7 +42,7 @@ public class MyListViewAdapter extends BaseAdapter {
     }
 
     void addElement() {
-        Note note = new Note();
+        Note note = new Note(" ", " ");
         FakeDB.getDb().add(note);
         NotesTable.addNote(note, database);
         Intent intent = new Intent(context, ListFullViewItemActivity.class);

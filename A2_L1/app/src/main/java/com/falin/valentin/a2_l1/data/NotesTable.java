@@ -40,19 +40,18 @@ public class NotesTable {
         db.insert(TABLE_NOTES_NAME, null, values);
     }
 
-    public static void editNote(Note newNote, SQLiteDatabase db) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NOTE_TITLE, newNote.getTitle());
-        values.put(COLUMN_NOTE_TEXT, newNote.getText());
-
-        //UPDATE Notes SET title = 'gog', text = 'pop' WHERE id = 1;
+    public static void editNote(Note note, Note newNote, SQLiteDatabase db) {
+        String noteTitle = note.getTitle();
+        if (noteTitle == null) {
+            noteTitle = " ";
+        }
         db.execSQL("UPDATE " + TABLE_NOTES_NAME + " SET " + COLUMN_NOTE_TITLE + " = '" +
                 newNote.getTitle() + "', " + COLUMN_NOTE_TEXT + " = '" + newNote.getText() +
-                "' WHERE " + COLUMN_ID + " = " + newNote.getId());
+                "' WHERE " + COLUMN_NOTE_TITLE + " = '" + noteTitle + "';");
     }
 
-    public static void deleteNote(int noteId, SQLiteDatabase db) {
-        db.delete(TABLE_NOTES_NAME, COLUMN_ID + " = " + noteId, null);
+    public static void deleteNote(Note note, SQLiteDatabase db) {
+        db.delete(TABLE_NOTES_NAME, COLUMN_NOTE_TITLE + " = '" + note.getTitle() + "'", null);
     }
 
     public static void deleteAll(SQLiteDatabase db) {

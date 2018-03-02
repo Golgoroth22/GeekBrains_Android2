@@ -14,17 +14,11 @@ import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
 import com.falin.valentin.a2_l1.data.NotesTable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 public class ListFullViewItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private int note_id;
     private SQLiteDatabase database;
-    private String filePath;
+    private Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,46 +27,24 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         initDB();
 
-        filePath = getFilesDir() + "/" + ListActivity.internalFileName;
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         note_id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
 
+        note = FakeDB.getDb().get(note_id);
+
         EditText titleText = findViewById(R.id.item_title);
-        titleText.setText(FakeDB.getDb().get(note_id).getTitle());
+        titleText.setText(note.getTitle());
 
         EditText text = findViewById(R.id.item_text);
-        text.setText(FakeDB.getDb().get(note_id).getText());
+        text.setText(note.getText());
     }
 
     private void initDB() {
         database = new DatabaseSQLiteHelper(getApplicationContext()).getWritableDatabase();
     }
-
-//    public static void saveToFile(String filePath) {
-//        File file;
-//        try {
-//            file = new File(filePath);
-//            FileOutputStream fileOutputStream;
-//            ObjectOutputStream objectOutputStream;
-//
-//            if (!file.exists()) {
-//                file.createNewFile();
-//            }
-//
-//            fileOutputStream = new FileOutputStream(file, false);
-//            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-//
-//            objectOutputStream.writeObject(FakeDB.getDb());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public void onBackPressed() {
@@ -98,7 +70,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_delete_note: {
-                NotesTable.deleteNote(note_id, database);
+                NotesTable.deleteNote(note, database);
                 //FakeDB.getDb().remove(note_id);
                 //saveToFile(filePath);
                 Intent intent = new Intent(this, ListActivity.class);
@@ -126,10 +98,8 @@ public class ListFullViewItemActivity extends AppCompatActivity
         EditText text = findViewById(R.id.item_text);
         String textText = text.getText().toString();
 
-        Note note = new Note(note_id, titleTextText, textText);
-        NotesTable.editNote(note, database);
-        //FakeDB.getDb().set(note_id, note);
-        //saveToFile(filePath);
+        Note newNote = new Note(note_id, titleTextText, textText);
+        NotesTable.editNote(note, newNote, ListActivity.database);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

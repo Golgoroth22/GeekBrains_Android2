@@ -13,7 +13,7 @@ public class Note implements Serializable {
         this.text = text;
     }
 
-    public Note(long id, String title, String text) {
+    Note(long id, String title, String text) {
         this.id = id;
         this.title = title;
         this.text = text;
