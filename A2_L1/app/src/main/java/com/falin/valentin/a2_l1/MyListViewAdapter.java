@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.falin.valentin.a2_l1.data.FakeDB;
@@ -65,10 +66,25 @@ public class MyListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = layoutInflater.inflate(R.layout.list_view_item, viewGroup, false);
+            view = layoutInflater.inflate(R.layout.note_detail_view, viewGroup, false);
         }
-        TextView titleTextView = view.findViewById(R.id.short_item_title);
-        titleTextView.setText(FakeDB.getDb().get(i).getTitle());
+//        TextView titleTextView = view.findViewById(R.id.short_item_title);
+//        titleTextView.setText(FakeDB.getDb().get(i).getTitle());
+//        titleTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context, ListFullViewItemActivity.class);
+//                intent.putExtra(EXTRA_ID, i);
+//                context.startActivity(intent);
+//            }
+//        });
+        final String noteTitle = FakeDB.getDb().get(i).getTitle();
+
+        TextView firstLetterTextView = view.findViewById(R.id.card_view_first_letter_text);
+        firstLetterTextView.setText(noteTitle.substring(0, 1).toUpperCase());
+
+        TextView titleTextView = view.findViewById(R.id.card_view_title_text);
+        titleTextView.setText(noteTitle);
         titleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +94,15 @@ public class MyListViewAdapter extends BaseAdapter {
             }
         });
 
+        ImageView deleteNoteImageView = view.findViewById(R.id.card_view_close_note_image);
+        deleteNoteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NotesTable.deleteNote(noteTitle, database);
+                FakeDB.getDb().remove(i);
+                notifyDataSetChanged();
+            }
+        });
         return view;
     }
 }

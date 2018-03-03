@@ -15,11 +15,15 @@
 
         <TextView
             android:id="@+id/card_view_first_letter_text"
-            style="@style/TextAppearance.AppCompat.Display2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/shape_oval"
+            android:gravity="center"
             android:hint="@string/d"
+            android:textColor="@android:color/black"
+            android:textSize="36sp"
             android:textStyle="bold" />
 
         <TextView

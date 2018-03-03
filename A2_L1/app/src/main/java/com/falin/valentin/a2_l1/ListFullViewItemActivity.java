@@ -70,7 +70,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_delete_note: {
-                NotesTable.deleteNote(note, database);
+                NotesTable.deleteNote(note.getTitle(), database);
                 //FakeDB.getDb().remove(note_id);
                 //saveToFile(filePath);
                 Intent intent = new Intent(this, ListActivity.class);
