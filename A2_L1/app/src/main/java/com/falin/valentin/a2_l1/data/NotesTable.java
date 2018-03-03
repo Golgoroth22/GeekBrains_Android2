@@ -50,8 +50,8 @@ public class NotesTable {
                 "' WHERE " + COLUMN_NOTE_TITLE + " = '" + noteTitle + "';");
     }
 
-    public static void deleteNote(Note note, SQLiteDatabase db) {
-        db.delete(TABLE_NOTES_NAME, COLUMN_NOTE_TITLE + " = '" + note.getTitle() + "'", null);
+    public static void deleteNote(String noteTitle, SQLiteDatabase db) {
+        db.delete(TABLE_NOTES_NAME, COLUMN_NOTE_TITLE + " = '" + noteTitle + "'", null);
     }
 
     public static void deleteAll(SQLiteDatabase db) {

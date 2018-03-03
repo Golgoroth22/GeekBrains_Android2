@@ -20,4 +20,7 @@
     <string name="notebook_is_empty">NoteBook is Empty</string>
     <string name="checkbutton">CheckButton</string>
     <string name="enter_your_city">Enter your city</string>
+    <string name="title">TITLE</string>
+    <string name="close_note">Close Note</string>
+    <string name="d">D</string>
 </resources>
