@@ -31,7 +31,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        note_id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
+        note_id = intent.getIntExtra(ListActivity.EXTRA_ID, 0);
 
         note = FakeDB.getDb().get(note_id);
 

@@ -1,6 +1,7 @@
 package com.falin.valentin.a2_l1;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,7 +13,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,12 +26,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
+import com.falin.valentin.a2_l1.data.NotesTable;
 import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 
 import org.json.JSONException;
@@ -36,14 +44,17 @@ import org.json.JSONObject;
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
-    public static String internalFileName = "internal_file.notes";
+    public static String EXTRA_ID = "id";
 
-    private MyListViewAdapter adapter;
+    //private MyListViewAdapter adapter;
+    private NoteDetailAdapter adapter;
+
     public static SQLiteDatabase database;
 
     private TextView contentListViewText;
     private TextView contentCityTextView;
     private TextView contentDegreesTextView;
+    private RecyclerView recyclerView;
 
     private static String city = "";
     private static String cityDegrees = "";
@@ -61,7 +72,12 @@ public class ListActivity extends AppCompatActivity
 
         initDB();
 
-        initListView();
+        //initListView();
+        adapter = new NoteDetailAdapter(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView = findViewById(R.id.content_list_view);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         initViews();
 
@@ -130,11 +146,11 @@ public class ListActivity extends AppCompatActivity
         contentDegreesTextView.setText(cityDegrees);
     }
 
-    private void initListView() {
-        ListView listView = findViewById(R.id.content_list_view);
-        adapter = new MyListViewAdapter(this, database);
-        listView.setAdapter(adapter);
-    }
+//    private void initListView() {
+//        ListView listView = findViewById(R.id.content_list_view);
+//        adapter = new MyListViewAdapter(this, database);
+//        listView.setAdapter(adapter);
+//    }
 
     private void updateWeatherData(final Location location) {
         new Thread() {
@@ -243,5 +259,86 @@ public class ListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.full_view_item_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class NoteDetailAdapter extends RecyclerView.Adapter<NoteDetailViewHolder> {
+        Context context;
+
+        public NoteDetailAdapter(Context context) {
+            this.context = context;
+            FakeDB.getDb().clear();
+            FakeDB.getDb().addAll(NotesTable.getAllNotes(database));
+        }
+
+        @Override
+        public NoteDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(context).inflate(R.layout.note_detail_view, parent, false);
+            return new NoteDetailViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(NoteDetailViewHolder holder, int position) {
+            final int id = position;
+            holder.firstLetterTextView.setText(FakeDB.getDb().get(id).getTitle().substring(0, 1).toUpperCase());
+            holder.titleTextView.setText(FakeDB.getDb().get(id).getTitle());
+            holder.titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ListFullViewItemActivity.class);
+                    intent.putExtra(EXTRA_ID, id);
+                    context.startActivity(intent);
+                }
+            });
+            holder.deleteNoteImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NotesTable.deleteNote(FakeDB.getDb().get(id).getTitle(), database);
+                    FakeDB.getDb().remove(id);
+                    notifyDataSetChanged();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            if (FakeDB.getDb().size() != 0) {
+                return FakeDB.getDb().size();
+            }
+            return 0;
+        }
+
+        void addElement() {
+            Note note = new Note(" ", " ");
+            FakeDB.getDb().add(note);
+            NotesTable.addNote(note, database);
+            Intent intent = new Intent(context, ListFullViewItemActivity.class);
+            intent.putExtra(EXTRA_ID, FakeDB.getDb().size() - 1);
+            context.startActivity(intent);
+        }
+
+        void deleteAll() {
+            FakeDB.getDb().clear();
+            NotesTable.deleteAll(database);
+            notifyDataSetChanged();
+        }
+
+        void updateList() {
+            FakeDB.getDb().clear();
+            FakeDB.getDb().addAll(NotesTable.getAllNotes(database));
+            notifyDataSetChanged();
+        }
+    }
+
+    private class NoteDetailViewHolder extends RecyclerView.ViewHolder {
+        TextView firstLetterTextView;
+        TextView titleTextView;
+        ImageView deleteNoteImageView;
+
+        NoteDetailViewHolder(View itemView) {
+            super(itemView);
+            firstLetterTextView = itemView.findViewById(R.id.card_view_first_letter_text);
+            titleTextView = itemView.findViewById(R.id.card_view_title_text);
+            deleteNoteImageView = itemView.findViewById(R.id.card_view_close_note_image);
+        }
     }
 }
