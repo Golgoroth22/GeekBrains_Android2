@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
+import com.falin.valentin.a2_l1.data.Note;
 import com.falin.valentin.a2_l1.data.NotesTable;
 
 public class ListFullViewItemActivity extends AppCompatActivity
@@ -31,7 +32,7 @@ public class ListFullViewItemActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        note_id = intent.getIntExtra(MyListViewAdapter.EXTRA_ID, 0);
+        note_id = intent.getIntExtra(ListActivity.EXTRA_ID, 0);
 
         note = FakeDB.getDb().get(note_id);
 
@@ -94,9 +95,15 @@ public class ListFullViewItemActivity extends AppCompatActivity
     private void saveChangesInNote() {
         EditText titleText = findViewById(R.id.item_title);
         String titleTextText = titleText.getText().toString();
+        if (titleTextText.equals("")) {
+            titleTextText = " ";
+        }
 
         EditText text = findViewById(R.id.item_text);
         String textText = text.getText().toString();
+        if (textText.equals("")) {
+            textText = " ";
+        }
 
         Note newNote = new Note(note_id, titleTextText, textText);
         NotesTable.editNote(note, newNote, ListActivity.database);

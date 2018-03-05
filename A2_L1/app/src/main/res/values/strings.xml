@@ -23,4 +23,6 @@
     <string name="title">TITLE</string>
     <string name="close_note">Close Note</string>
     <string name="d">D</string>
+    <string name="note_title">Enter note title</string>
+    <string name="note_text">Enter note text</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.falin.valentin.a2_l1;
+package com.falin.valentin.a2_l1.data;
 
 
 import java.io.Serializable;
@@ -8,12 +8,12 @@ public class Note implements Serializable {
     private String title;
     private String text;
 
-    Note(String title, String text) {
+    public Note(String title, String text) {
         this.title = title;
         this.text = text;
     }
 
-    Note(long id, String title, String text) {
+    public Note(long id, String title, String text) {
         this.id = id;
         this.title = title;
         this.text = text;
