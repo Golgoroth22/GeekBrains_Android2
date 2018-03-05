@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQuery;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,13 +27,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
+import com.falin.valentin.a2_l1.data.Note;
 import com.falin.valentin.a2_l1.data.NotesTable;
 import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 

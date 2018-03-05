@@ -5,8 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.falin.valentin.a2_l1.Note;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,5 @@
 package com.falin.valentin.a2_l1.data;
 
-import com.falin.valentin.a2_l1.Note;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
