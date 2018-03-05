@@ -161,7 +161,9 @@ public class ListActivity extends AppCompatActivity
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "City not found", Toast.LENGTH_LONG).show();
+                            if (contentCityTextView.getText().equals("")) {
+                                contentCityTextView.setText("Your location not defined");
+                            }
                         }
                     });
                 } else {
