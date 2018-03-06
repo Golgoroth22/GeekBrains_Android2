@@ -64,21 +64,19 @@ public class ListActivity extends AppCompatActivity
         setContentView(R.layout.activity_list);
 
         getLocation();
-
         initUIComponents();
-
         initDB();
+        initRecyclerViewAndApadter();
+        initViews();
+        checkNoteBookSize();
+    }
 
-        //initListView();
+    private void initRecyclerViewAndApadter() {
         adapter = new NoteDetailAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.content_list_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        initViews();
-
-        checkNoteBookSize();
     }
 
     private void initDB() {
@@ -91,7 +89,7 @@ public class ListActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 10, 0, locationListener);
     }
 
     private LocationListener locationListener = new LocationListener() {

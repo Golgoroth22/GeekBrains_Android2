@@ -4,5 +4,6 @@
     <style name="my_fab_style" parent="AlertDialog.AppCompat">
         <item name="android:layout_margin">@dimen/fab_margin</item>
         <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:color">@color/colorPrimary</item>
     </style>
 </resources>
