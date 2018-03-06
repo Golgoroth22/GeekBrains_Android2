@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorAccentLower"
     tools:context="com.falin.valentin.a2_l1.ListFullViewItemActivity"
     tools:showIn="@layout/app_bar_list_full_view_item">
 
