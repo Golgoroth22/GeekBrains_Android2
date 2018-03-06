@@ -291,7 +291,7 @@ public class ListActivity extends AppCompatActivity
                 public void onClick(View view) {
                     NotesTable.deleteNote(FakeDB.getDb().get(id).getTitle(), database);
                     FakeDB.getDb().remove(id);
-                    notifyDataSetChanged();
+                    notifyItemRemoved(id);
                 }
             });
         }
