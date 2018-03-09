@@ -33,17 +33,14 @@ import com.falin.valentin.a2_l1.data.DatabaseSQLiteHelper;
 import com.falin.valentin.a2_l1.data.FakeDB;
 import com.falin.valentin.a2_l1.data.Note;
 import com.falin.valentin.a2_l1.data.NotesTable;
-import com.falin.valentin.a2_l1.data.WeatherDataLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String LOG_TAG = ListActivity.class.getSimpleName();
     public static String EXTRA_ID = "id";
 
-    //private MyListViewAdapter adapter;
     private NoteDetailAdapter adapter;
 
     public static SQLiteDatabase database;
@@ -56,19 +53,28 @@ public class ListActivity extends AppCompatActivity
     private static String city = "";
     private static String cityDegrees = "";
 
-    private final Handler handler = new Handler();
+
+    public static Location appLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        Intent intent = new Intent(getApplicationContext(), WeatherService.class);
+        startService(intent);
 
         getLocation();
         initUIComponents();
         initDB();
         initRecyclerViewAndApadter();
         initViews();
+        updateWeather();
         checkNoteBookSize();
+    }
+
+    private void updateWeather() {
+        contentDegreesTextView.setText(WeatherService.currentWeather);
+        contentCityTextView.setText(WeatherService.currentCity);
     }
 
     private void initRecyclerViewAndApadter() {
@@ -95,7 +101,8 @@ public class ListActivity extends AppCompatActivity
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            updateWeatherData(location);
+            appLocation = location;
+            updateWeather();
         }
 
         @Override
@@ -139,50 +146,6 @@ public class ListActivity extends AppCompatActivity
         contentCityTextView.setText(city);
         contentDegreesTextView = findViewById(R.id.content_degrees_text_view);
         contentDegreesTextView.setText(cityDegrees);
-    }
-
-//    private void initListView() {
-//        ListView listView = findViewById(R.id.content_list_view);
-//        adapter = new MyListViewAdapter(this, database);
-//        listView.setAdapter(adapter);
-//    }
-
-    private void updateWeatherData(final Location location) {
-        new Thread() {
-            @Override
-            public void run() {
-                final JSONObject jsonObject = WeatherDataLoader.getJSONData(location);
-                if (jsonObject == null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (contentCityTextView.getText().equals("")) {
-                                contentCityTextView.setText("Your location not defined");
-                            }
-                        }
-                    });
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            renderWeather(jsonObject);
-                        }
-                    });
-                }
-            }
-        }.start();
-    }
-
-    private void renderWeather(JSONObject jsonObject) {
-        try {
-            JSONObject mainObject = jsonObject.getJSONObject("main");
-            cityDegrees = String.format("%.2f", mainObject.getDouble("temp")) + " ℃";
-            contentDegreesTextView.setText(cityDegrees);
-            contentCityTextView.setText(jsonObject.get("name").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(LOG_TAG, "One or more fields not found in the JSON data");
-        }
     }
 
     @Override
