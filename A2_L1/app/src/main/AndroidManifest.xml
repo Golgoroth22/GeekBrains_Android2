@@ -30,6 +30,8 @@
         <activity
             android:name=".DevActivity"
             android:parentActivityName=".ListActivity" />
+
+        <service android:name=".WeatherService" />
     </application>
 
 </manifest>
