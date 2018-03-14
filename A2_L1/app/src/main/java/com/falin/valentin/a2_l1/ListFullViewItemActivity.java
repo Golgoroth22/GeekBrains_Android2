@@ -93,16 +93,16 @@ public class ListFullViewItemActivity extends AppCompatActivity
     }
 
     private void saveChangesInNote() {
-        EditText titleText = findViewById(R.id.item_title);
-        String titleTextText = titleText.getText().toString();
-        if (titleTextText.equals("")) {
-            titleTextText = " ";
-        }
-
         EditText text = findViewById(R.id.item_text);
-        String textText = text.getText().toString();
+        String textText = text.getText().toString().trim();
         if (textText.equals("")) {
             textText = " ";
+        }
+
+        EditText titleText = findViewById(R.id.item_title);
+        String titleTextText = titleText.getText().toString().trim();
+        if (titleTextText.equals("")) {
+            titleTextText = textText.substring(0, 15) + "...";
         }
 
         Note newNote = new Note(note_id, titleTextText, textText);
