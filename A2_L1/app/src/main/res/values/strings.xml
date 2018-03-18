@@ -26,6 +26,6 @@
     <string name="note_title">Enter note title</string>
     <string name="note_text">Enter note text</string>
     <string name="your_location_not_defined">Your location not defined</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">EMPTY NOTEBOOK</string>
     <string name="add_widget">Add widget</string>
 </resources>

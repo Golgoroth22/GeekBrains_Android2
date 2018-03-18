@@ -102,7 +102,11 @@ public class ListFullViewItemActivity extends AppCompatActivity
         EditText titleText = findViewById(R.id.item_title);
         String titleTextText = titleText.getText().toString().trim();
         if (titleTextText.equals("")) {
-            titleTextText = textText.substring(0, 15) + "...";
+            if (textText.length() < 15) {
+                titleTextText = textText + "...";
+            } else {
+                titleTextText = textText.substring(0, 15) + "...";
+            }
         }
 
         Note newNote = new Note(note_id, titleTextText, textText);
