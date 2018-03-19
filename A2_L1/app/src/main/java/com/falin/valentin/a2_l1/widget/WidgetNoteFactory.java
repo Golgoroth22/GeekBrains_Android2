@@ -52,7 +52,7 @@ public class WidgetNoteFactory implements RemoteViewsService.RemoteViewsFactory 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.item_widget);
-        remoteViews.setTextViewText(R.id.item_widget_text, noteList.get(position).getTitle());
+        remoteViews.setTextViewText(R.id.item_widget_text, " " + noteList.get(position).getTitle());
 
         Intent clickIntent = new Intent();
         clickIntent.putExtra(AppWidget.NOTE_TEXT, noteList.get(position).getText());
